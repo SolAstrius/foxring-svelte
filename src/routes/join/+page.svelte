@@ -6,9 +6,9 @@
 
   const base = __BACKEND_URL__;
   const widgetCode = `<nav id="foxring">
-  <a href="${base}/prev?from=YOUR_ALIAS">\u2190 Prev</a>
+  <a href="${base}/prev?from=YOUR_NAME">\u2190 Prev</a>
   <a href="${base}">\ud83e\udd8a Foxring</a>
-  <a href="${base}/next?from=YOUR_ALIAS">Next \u2192</a>
+  <a href="${base}/next?from=YOUR_NAME">Next \u2192</a>
 </nav>`;
 
   async function copyWidget() {
@@ -36,7 +36,7 @@
       <div class="path-label">Simple &mdash; server redirects</div>
       <p class="path-desc">
         Plain HTML links that hit the ring API directly.
-        Visitors click, get 302'd to the next site. No JavaScript,
+        Visitors click, get 307'd to the next site. No JavaScript,
         works everywhere.
       </p>
       <div class="code-wrap">
@@ -46,9 +46,10 @@
         </button>
       </div>
       <div class="endpoints">
-        <code>GET /next?from=alias → 302</code>
-        <code>GET /prev?from=alias → 302</code>
-        <code>GET /random → 302</code>
+        <code>GET /next?from=name → 307</code>
+        <code>GET /prev?from=name → 307</code>
+        <code>GET /random → 307</code>
+        <code>GET /first → 307</code>
       </div>
     </div>
 
@@ -62,14 +63,15 @@
         on the visitor's end.
       </p>
       <div class="endpoints">
-        <code>GET /next.json?from=alias</code>
-        <code>GET /prev.json?from=alias</code>
-        <code>GET /random.json</code>
-        <code>GET /webring.json</code>
+        <code>GET /next/json?from=name</code>
+        <code>GET /prev/json?from=name</code>
+        <code>GET /random/json</code>
+        <code>GET /first/json</code>
+        <code>GET /list</code>
       </div>
       <p class="path-desc response-hint">
-        Returns <code>{`{alias, url, title, icon}`}</code>.<br>
-        <code>/webring.json</code> includes <code>online</code> status.<br>
+        Returns <code>{`{id, name, url, faviconName, status}`}</code>.<br>
+        <code>/list</code> returns all sites with ping status.<br>
         All endpoints serve CORS <code>*</code>.
       </p>
     </div>

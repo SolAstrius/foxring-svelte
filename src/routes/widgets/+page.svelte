@@ -3,7 +3,11 @@
   import { app, accents } from "$lib/state.svelte";
 
   let copiedIdx = $state(-1);
-  let alias = $state("");
+  let siteName = $state("");
+  let inputEl: HTMLInputElement;
+
+  $effect(() => { inputEl?.focus(); });
+
   let dark = $derived(
     app.theme === 'dark' || (app.theme === null && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches)
   );
@@ -11,7 +15,7 @@
   let accent = $derived(accents[app.accent][dark ? 'dark' : 'light'][0]);
 
   const base = __BACKEND_URL__;
-  let from = $derived(alias.trim() || "YOUR_ALIAS");
+  let from = $derived(siteName.trim() || "YOUR_NAME");
   let prev = $derived(`${base}/prev?from=${from}`);
   let hub  = base;
   let next = $derived(`${base}/next?from=${from}`);
@@ -111,8 +115,9 @@
     <input
       class="alias-input"
       type="text"
-      placeholder="your alias"
-      bind:value={alias}
+      placeholder="your site name"
+      bind:this={inputEl}
+      bind:value={siteName}
     />
   </div>
 
