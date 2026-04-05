@@ -1,11 +1,13 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
-const BACKEND_URL = process.env.PUBLIC_BACKEND_URL || 'https://foxr.ing';
+const BACKEND_URL = process.env.PUBLIC_BACKEND_URL || '';
+const PUBLIC_URL = process.env.PUBLIC_SITE_URL || 'https://foxr.ing';
 
 export default defineConfig({
 	plugins: [sveltekit()],
 	define: {
 		__BACKEND_URL__: JSON.stringify(BACKEND_URL),
+		__PUBLIC_URL__: JSON.stringify(PUBLIC_URL),
 	},
 });

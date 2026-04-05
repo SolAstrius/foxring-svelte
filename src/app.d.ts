@@ -2,6 +2,7 @@
 // for information about these interfaces
 declare global {
 	const __BACKEND_URL__: string;
+	const __PUBLIC_URL__: string;
 
 	namespace App {
 		// interface Error {}

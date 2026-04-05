@@ -14,11 +14,11 @@
 
   let accent = $derived(accents[app.accent][dark ? 'dark' : 'light'][0]);
 
-  const base = __BACKEND_URL__;
+  const pub = __PUBLIC_URL__;
   let from = $derived(siteName.trim() || "YOUR_NAME");
-  let prev = $derived(`${base}/prev?from=${from}`);
-  let hub  = base;
-  let next = $derived(`${base}/next?from=${from}`);
+  let prev = $derived(`${pub}/prev?from=${from}`);
+  let hub  = pub;
+  let next = $derived(`${pub}/next?from=${from}`);
 
   type WidgetFn = (p: string, h: string, n: string, a: string) => string;
   type Widget = { name: string; light: WidgetFn; dark?: WidgetFn };

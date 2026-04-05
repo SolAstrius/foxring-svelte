@@ -1,0 +1,10 @@
+node_modules
+.svelte-kit
+build
+Dockerfile
+docker-compose*
+.git
+.gitignore
+README.md
+AUDIT.md
+*.epub

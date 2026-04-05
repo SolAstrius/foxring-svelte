@@ -1,15 +1,80 @@
 <script lang="ts">
   import RuneText from "$lib/RuneText.svelte";
   import { app } from "$lib/state.svelte";
+  import { page } from '$app/state';
+  import { getUser, getMySites, addSite, deleteSite, authUrl, type User, type Site } from "$lib/api";
+  import { Trash2 } from "lucide-svelte";
 
   let copied = $state(false);
+  let exampleJson = $state("");
 
   const base = __BACKEND_URL__;
+  const pub = __PUBLIC_URL__;
   const widgetCode = `<nav id="foxring">
-  <a href="${base}/prev?from=YOUR_NAME">\u2190 Prev</a>
-  <a href="${base}">\ud83e\udd8a Foxring</a>
-  <a href="${base}/next?from=YOUR_NAME">Next \u2192</a>
+  <a href="${pub}/prev?from=YOUR_NAME">\u2190 Prev</a>
+  <a href="${pub}">\ud83e\udd8a Foxring</a>
+  <a href="${pub}/next?from=YOUR_NAME">Next \u2192</a>
 </nav>`;
+
+  let user = $state<User | null>(null);
+  let mySites = $state<Site[]>([]);
+  let loading = $state(true);
+  let newUrl = $state("");
+  let newName = $state("");
+  let submitting = $state(false);
+  let error = $state("");
+
+  $effect(() => {
+    (async () => {
+      user = await getUser();
+      if (user) mySites = await getMySites();
+      loading = false;
+    })();
+    (async () => {
+      try {
+        const res = await fetch(`${base}/first/json`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data) { exampleJson = JSON.stringify(data, null, 2); return; }
+        }
+      } catch {}
+      exampleJson = `{
+  "id": 1,
+  "name": "Example Site",
+  "url": "https://example.com",
+  "faviconName": "example.png",
+  "status": {
+    "status": "success",
+    "statusCode": 200,
+    "responseTimeMs": 142
+  }
+}`;
+    })();
+  });
+
+  async function handleAdd() {
+    error = "";
+    submitting = true;
+    const result = await addSite(newUrl, newName || null);
+    submitting = false;
+    if (result.ok) {
+      mySites = [...mySites, result.site];
+      newUrl = "";
+      newName = "";
+    } else {
+      error = result.error;
+    }
+  }
+
+  async function handleDelete(site: Site) {
+    if (await deleteSite(site.id)) {
+      mySites = mySites.filter(s => s.id !== site.id);
+    }
+  }
+
+  function signInUrl() {
+    return authUrl(page.url.href);
+  }
 
   async function copyWidget() {
     await navigator.clipboard.writeText(widgetCode);
@@ -28,16 +93,15 @@
     <span class="sep">&middot;</span>
     <span class="check-item"><span class="check"></span> Add a widget</span>
     <span class="sep">&middot;</span>
-    <span class="check-item"><span class="check"></span> <a href="https://t.me/vanutp">Send your URL</a></span>
+    <span class="check-item"><span class="check"></span> Register your site</span>
   </div>
 
-  <div class="two-paths">
-    <div class="path">
-      <div class="path-label">Simple &mdash; server redirects</div>
+  <div class="two-cols">
+    <div class="col">
+      <div class="path-label">Add a widget</div>
       <p class="path-desc">
-        Plain HTML links that hit the ring API directly.
-        Visitors click, get 307'd to the next site. No JavaScript,
-        works everywhere.
+        Plain HTML links that hit the ring API.
+        Visitors click, get 307'd to the next site.
       </p>
       <div class="code-wrap">
         <pre>{widgetCode}</pre>
@@ -51,17 +115,81 @@
         <code>GET /random → 307</code>
         <code>GET /first → 307</code>
       </div>
+      <a class="gallery-link" href="/widgets">More widgets &rarr;&nbsp;p.3</a>
+
+      <!-- ring chain doodle -->
+      <svg class="doodle doodle-chain" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="25" r="14" stroke="var(--border-lore)" stroke-width="1.5" stroke-dasharray="3 2" />
+        <circle cx="75" cy="25" r="14" stroke="var(--border-lore)" stroke-width="1.5" stroke-dasharray="3 2" />
+        <circle cx="110" cy="25" r="14" stroke="var(--border-lore)" stroke-width="1.5" stroke-dasharray="3 2" />
+        <circle cx="145" cy="25" r="14" stroke="var(--border-lore)" stroke-width="1.5" stroke-dasharray="3 2" />
+        <circle cx="75" cy="25" r="5" fill="var(--accent)" opacity="0.3" />
+        <line x1="8" y1="25" x2="26" y2="25" stroke="var(--border-lore)" stroke-width="1" stroke-dasharray="2 2" />
+        <line x1="159" y1="25" x2="192" y2="25" stroke="var(--border-lore)" stroke-width="1" stroke-dasharray="2 2" />
+        <path d="M186 20 L194 25 L186 30" stroke="var(--border-lore)" stroke-width="1.5" fill="none" />
+        <path d="M14 20 L6 25 L14 30" stroke="var(--border-lore)" stroke-width="1.5" fill="none" />
+      </svg>
+
+      <div class="how-it-works lore">
+        <div class="flow-title">How the ring works</div>
+        <div class="flow">
+          <span class="flow-node">Visitor</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node">Your widget</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node accent">foxr.ing</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node">Next site</span>
+        </div>
+        <p class="flow-note">
+          The ring API looks up who's after you
+          and redirects the visitor there. No
+          client&#8209;side JavaScript needed.
+        </p>
+      </div>
     </div>
 
     <div class="divider"></div>
 
-    <div class="path">
-      <div class="path-label">JS&#8209;powered &mdash; CORS JSON</div>
-      <p class="path-desc">
-        Fetch neighbor data client&#8209;side and build your own UI.
-        Works on static hosts, but requires JavaScript
-        on the visitor's end.
-      </p>
+    <div class="col">
+      <div class="path-label">Register your site</div>
+      <div class="account-section">
+        {#if loading}
+          <p class="muted">Checking auth...</p>
+        {:else if !user}
+          <p class="muted">To get an account, <a href="https://t.me/vanutp">message vanutp</a>.</p>
+          <a class="btn" href={signInUrl()}>Sign in</a>
+        {:else}
+          <div class="user-header">
+            <span class="muted">Signed in as <strong>{user.username}</strong></span>
+          </div>
+          {#if mySites.length > 0}
+            <ul class="my-sites">
+              {#each mySites as site}
+                <li>
+                  <a href={site.url}>{site.name}</a>
+                  <span class="muted site-url">{site.url}</span>
+                  <button class="delete-btn" onclick={() => handleDelete(site)} aria-label="Delete {site.name}">
+                    <Trash2 size={12} />
+                  </button>
+                </li>
+              {/each}
+            </ul>
+          {/if}
+          <form class="add-form" onsubmit={(e) => { e.preventDefault(); handleAdd(); }}>
+            <input class="field" type="url" placeholder="https://your.site" bind:value={newUrl} required />
+            <input class="field" type="text" placeholder="Name (optional)" bind:value={newName} />
+            <button class="btn" type="submit" disabled={submitting || !newUrl.trim()}>
+              {submitting ? "Add" : "Add"}
+            </button>
+          </form>
+          {#if error}
+            <p class="error">{error}</p>
+          {/if}
+        {/if}
+      </div>
+
+      <div class="path-label">JSON API</div>
       <div class="endpoints">
         <code>GET /next/json?from=name</code>
         <code>GET /prev/json?from=name</code>
@@ -69,15 +197,38 @@
         <code>GET /first/json</code>
         <code>GET /list</code>
       </div>
+      <div class="path-label">Example response</div>
+      <div class="code-wrap">
+        <pre>{exampleJson || "Loading..."}</pre>
+      </div>
       <p class="path-desc response-hint">
-        Returns <code>{`{id, name, url, faviconName, status}`}</code>.<br>
-        <code>/list</code> returns all sites with ping status.<br>
         All endpoints serve CORS <code>*</code>.
       </p>
+
+      <!-- compass rose / star doodle -->
+      <svg class="doodle doodle-compass" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="28" stroke="var(--border-lore)" stroke-width="1" stroke-dasharray="4 3" />
+        <circle cx="40" cy="40" r="16" stroke="var(--border-lore)" stroke-width="1" />
+        <circle cx="40" cy="40" r="3" fill="var(--accent)" opacity="0.5" />
+        <!-- cardinal points -->
+        <line x1="40" y1="8" x2="40" y2="22" stroke="var(--accent)" stroke-width="1.5" opacity="0.6" />
+        <line x1="40" y1="58" x2="40" y2="72" stroke="var(--border-lore)" stroke-width="1" />
+        <line x1="8" y1="40" x2="22" y2="40" stroke="var(--border-lore)" stroke-width="1" />
+        <line x1="58" y1="40" x2="72" y2="40" stroke="var(--border-lore)" stroke-width="1" />
+        <!-- diamond tips -->
+        <polygon points="40,8 37,16 40,14 43,16" fill="var(--accent)" opacity="0.6" />
+        <!-- diagonals -->
+        <line x1="18" y1="18" x2="26" y2="26" stroke="var(--border-lore)" stroke-width="0.75" />
+        <line x1="62" y1="18" x2="54" y2="26" stroke="var(--border-lore)" stroke-width="0.75" />
+        <line x1="18" y1="62" x2="26" y2="54" stroke="var(--border-lore)" stroke-width="0.75" />
+        <line x1="62" y1="62" x2="54" y2="54" stroke="var(--border-lore)" stroke-width="0.75" />
+        <!-- tick marks on circle -->
+        <line x1="40" y1="12" x2="40" y2="15" stroke="var(--border-lore)" stroke-width="0.75" />
+        <line x1="56" y1="14" x2="54.5" y2="17" stroke="var(--border-lore)" stroke-width="0.75" />
+        <line x1="66" y1="24" x2="63" y2="25.5" stroke="var(--border-lore)" stroke-width="0.75" />
+      </svg>
     </div>
   </div>
-
-  <a class="gallery-link" href="/widgets">Browse the widget gallery &rarr;&nbsp;p.3</a>
 </div>
 
 <style>
@@ -112,14 +263,14 @@
   }
   .sep { color: var(--border-lore); }
 
-  .two-paths {
+  .two-cols {
     display: flex;
     gap: 1.25rem;
     width: 100%;
     flex: 1;
   }
 
-  .path {
+  .col {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -209,6 +360,161 @@
   }
   .copy-btn:hover { background: var(--accent-dark); }
 
+  .account-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: var(--bg-lore);
+    border: 1px solid var(--border-lore);
+    border-radius: 6px;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .user-header { font-size: 12px; }
+
+  .my-sites {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  .my-sites li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px dashed var(--border-box);
+    font-size: 12px;
+  }
+  .my-sites a {
+    color: var(--text);
+    font-weight: bold;
+    text-decoration: none;
+  }
+  .my-sites a:hover { color: var(--accent); }
+  .site-url { font-size: 10px; margin-left: auto; }
+  .delete-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.2rem;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .delete-btn:hover { color: var(--accent); }
+
+  .add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .field {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    padding: 0.35rem 0.6rem;
+    border: 2px solid var(--btn-border);
+    border-radius: 4px;
+    background: var(--btn-bg);
+    color: var(--text);
+    outline: none;
+    flex: 1;
+    min-width: 0;
+  }
+  .field:focus {
+    border-color: var(--accent);
+  }
+  .field::placeholder { color: var(--text-muted); }
+
+  .btn {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .btn:hover { background: var(--accent-dark); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .muted { color: var(--text-muted); font-size: 12px; margin: 0; }
+
+  .error {
+    color: #c44;
+    font-size: 11px;
+    margin: 0;
+  }
+
+  .how-it-works {
+    margin-top: auto;
+    text-align: center;
+    font-style: normal;
+  }
+  .flow-title {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 10px;
+    font-family: 'Courier Prime', monospace;
+  }
+  .flow-node.accent {
+    background: var(--accent);
+    color: white;
+    font-weight: bold;
+  }
+  .flow-arrow {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  .flow-note {
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin: 0.5rem 0 0;
+    font-style: italic;
+  }
+
+  .doodle {
+    align-self: center;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+  .doodle-chain {
+    width: 160px;
+    height: 40px;
+    margin: 0.25rem 0;
+  }
+  .doodle-compass {
+    width: 70px;
+    height: 70px;
+    margin-top: auto;
+  }
+
   .gallery-link {
     font-size: 12px;
     font-weight: bold;
@@ -216,11 +522,12 @@
     text-transform: uppercase;
     color: var(--accent);
     text-decoration: none;
+    text-align: right;
   }
   .gallery-link:hover { text-decoration: underline; }
 
   @media (max-width: 700px) {
-    .two-paths {
+    .two-cols {
       flex-direction: column;
     }
     .divider {
