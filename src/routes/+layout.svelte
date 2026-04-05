@@ -361,10 +361,11 @@
   footer a { color: #a0a0a8; }
 
   @media (max-width: 700px) {
-    .page { aspect-ratio: auto; }
+    .desk { background: var(--bg-page); }
+    .page { aspect-ratio: auto; border: none; box-shadow: none; }
     .page-inner { flex-direction: column; padding: 1.5rem; gap: 1.4rem; }
     .corner { display: none; }
     .page-turn { display: none; }
-    .page-num { bottom: 0; right: 0.5rem; }
+    .page-num { display: none; }
   }
 </style>
