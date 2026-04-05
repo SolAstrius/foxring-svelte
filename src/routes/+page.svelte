@@ -18,8 +18,12 @@
     return site.status?.status === 'success';
   }
 
+  function ensureProtocol(url: string): string {
+    return /^https?:\/\//.test(url) ? url : `https://${url}`;
+  }
+
   function hostname(url: string): string {
-    try { return new URL(url).hostname; } catch { return url; }
+    try { return new URL(ensureProtocol(url)).hostname; } catch { return url; }
   }
 </script>
 
@@ -62,7 +66,7 @@
             {#if faviconUrl(site)}
               <img class="site-icon" src={faviconUrl(site)} alt="" />
             {/if}
-            <a href={site.url}>{site.name}</a>
+            <a href={ensureProtocol(site.url)}>{site.name}</a>
             <span class="desc">{hostname(site.url)}</span>
           </li>
         {/each}
