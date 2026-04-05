@@ -10,9 +10,9 @@
   const base = __BACKEND_URL__;
   const pub = __PUBLIC_URL__;
   const widgetCode = `<nav id="foxring">
-  <a href="${pub}/prev?from=YOUR_NAME">\u2190 Prev</a>
+  <a href="${pub}/prev?from=YOUR_URL">\u2190 Prev</a>
   <a href="${pub}">\ud83e\udd8a Foxring</a>
-  <a href="${pub}/next?from=YOUR_NAME">Next \u2192</a>
+  <a href="${pub}/next?from=YOUR_URL">Next \u2192</a>
 </nav>`;
 
   let user = $state<User | null>(null);
@@ -89,8 +89,8 @@
         </button>
       </div>
       <div class="endpoints">
-        <code>GET /next?from=name → 307</code>
-        <code>GET /prev?from=name → 307</code>
+        <code>GET /next?from=url → 307</code>
+        <code>GET /prev?from=url → 307</code>
         <code>GET /random → 307</code>
         <code>GET /first → 307</code>
       </div>
@@ -139,8 +139,8 @@
 
       <div class="path-label">JSON API</div>
       <div class="endpoints">
-        <code>GET /next/json?from=name</code>
-        <code>GET /prev/json?from=name</code>
+        <code>GET /next/json?from=url</code>
+        <code>GET /prev/json?from=url</code>
         <code>GET /random/json</code>
         <code>GET /first/json</code>
         <code>GET /list</code>

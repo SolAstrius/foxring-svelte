@@ -58,6 +58,8 @@
 </script>
 
 <svelte:window onkeydown={(e) => {
+  const tag = (e.target as HTMLElement)?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
   if (e.key === 'ArrowLeft' && prevPage) goto(prevPage.path);
   if (e.key === 'ArrowRight' && nextPage) goto(nextPage.path);
 }} />

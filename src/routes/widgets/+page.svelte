@@ -15,7 +15,7 @@
   let accent = $derived(accents[app.accent][dark ? 'dark' : 'light'][0]);
 
   const pub = __PUBLIC_URL__;
-  let from = $derived(siteName.trim() || "YOUR_NAME");
+  let from = $derived(siteName.trim() || "YOUR_URL");
   let prev = $derived(`${pub}/prev?from=${from}`);
   let hub  = pub;
   let next = $derived(`${pub}/next?from=${from}`);
@@ -115,7 +115,7 @@
     <input
       class="alias-input"
       type="text"
-      placeholder="your site name"
+      placeholder="your.site"
       bind:this={inputEl}
       bind:value={siteName}
     />

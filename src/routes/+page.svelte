@@ -35,9 +35,9 @@
   </div>
 
   <div class="ring-nav">
-    <a href={`${base}/prev?from=foxring`}>&larr;&nbsp;Prev</a>
-    <a href={`${base}/random`}><Dices size={18} /></a>
-    <a href={`${base}/next?from=foxring`}>Next&nbsp;&rarr;</a>
+    <a href="/prev?from=foxr.ing">&larr;&nbsp;Prev</a>
+    <a href="/random"><Dices size={18} /></a>
+    <a href="/next?from=foxr.ing">Next&nbsp;&rarr;</a>
   </div>
 </div>
 
