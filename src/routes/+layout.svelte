@@ -3,10 +3,10 @@
   import { app, pages, accents, accentNames } from '$lib/state.svelte';
   import { page } from '$app/state';
   import { Sun, Moon, Monitor } from 'lucide-svelte';
+  import { goto } from '$app/navigation';
 
   let { children } = $props();
 
-  let canvasEl: HTMLCanvasElement;
   let systemDark = $state(false);
 
   let effectiveTheme = $derived(app.theme ?? (systemDark ? 'dark' : 'light'));
@@ -47,104 +47,6 @@
     else app.theme = null;
   }
 
-  const W = 96;
-  const H = 64;
-  // 0 = dead, 1 = alive, 2 = dying
-  const STATES = 3;
-
-  $effect(() => {
-    const ctx = canvasEl.getContext('2d')!;
-    ctx.imageSmoothingEnabled = false;
-
-    let grid = new Uint8Array(W * H);
-    let next = new Uint8Array(W * H);
-
-    // seed ~5% alive
-    for (let i = 0; i < grid.length; i++) {
-      grid[i] = Math.random() < 0.05 ? 1 : 0;
-    }
-
-    function neighbors(x: number, y: number): number {
-      let count = 0;
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
-          if (dx === 0 && dy === 0) continue;
-          const nx = (x + dx + W) % W;
-          const ny = (y + dy + H) % H;
-          if (grid[ny * W + nx] === 1) count++;
-        }
-      }
-      return count;
-    }
-
-    function step() {
-      for (let y = 0; y < H; y++) {
-        for (let x = 0; x < W; x++) {
-          const i = y * W + x;
-          const state = grid[i];
-          const n = neighbors(x, y);
-          if (state === 0) {
-            // dead cell births with exactly 2 alive neighbors (Brian's Brain rule)
-            next[i] = n === 2 ? 1 : 0;
-          } else if (state === 1) {
-            // alive -> dying
-            next[i] = 2;
-          } else {
-            // dying -> dead
-            next[i] = 0;
-          }
-        }
-      }
-      // occasional random sparks to keep it alive
-      for (let i = 0; i < 3; i++) {
-        const idx = Math.floor(Math.random() * grid.length);
-        if (next[idx] === 0) next[idx] = 1;
-      }
-      [grid, next] = [next, grid];
-    }
-
-    function draw() {
-      const img = ctx.createImageData(W, H);
-      for (let i = 0; i < grid.length; i++) {
-        const p = i * 4;
-        const state = grid[i];
-        if (state === 1) {
-          // alive: bright warm tint
-          img.data[p] = 180;
-          img.data[p + 1] = 140;
-          img.data[p + 2] = 200;
-        } else if (state === 2) {
-          // dying: dim ember
-          img.data[p] = 60;
-          img.data[p + 1] = 40;
-          img.data[p + 2] = 70;
-        } else {
-          // dead: deep dark
-          img.data[p] = 18;
-          img.data[p + 1] = 16;
-          img.data[p + 2] = 24;
-        }
-        img.data[p + 3] = 255;
-      }
-      ctx.putImageData(img, 0, 0);
-    }
-
-    let frame = 0;
-    let raf: number;
-    function loop() {
-      frame++;
-      if (frame % 6 === 0) {
-        step();
-        draw();
-      }
-      raf = requestAnimationFrame(loop);
-    }
-    draw();
-    raf = requestAnimationFrame(loop);
-
-    return () => cancelAnimationFrame(raf);
-  });
-
   $effect(() => {
     localStorage.setItem("trunic", String(app.trunic));
   });
@@ -155,11 +57,15 @@
   let pageNum = $derived(currentIdx >= 0 ? pages[currentIdx].num : 1);
 </script>
 
+<svelte:window onkeydown={(e) => {
+  if (e.key === 'ArrowLeft' && prevPage) goto(prevPage.path);
+  if (e.key === 'ArrowRight' && nextPage) goto(nextPage.path);
+}} />
+
 <svelte:head>
   <link rel="icon" href={favicon} />
 </svelte:head>
 
-<canvas bind:this={canvasEl} width={W} height={H} class="starfield"></canvas>
 <div class="desk">
   <div class="toggles">
     <button class="toggle" class:active={app.trunic} onclick={() => app.trunic = !app.trunic}>
@@ -232,6 +138,7 @@
     --dark-panel-bg: #1e1e24;
     --dark-panel-text: #d4d0cc;
     --dark-panel-heading: #e8e0d4;
+    --bg-desk: #3a3a42;
     --dark-panel-muted: #a09a94;
   }
 
@@ -258,6 +165,7 @@
     --dark-panel-bg: #121218;
     --dark-panel-text: #d4d0cc;
     --dark-panel-heading: #e8e0d4;
+    --bg-desk: #1a1a20;
     --dark-panel-muted: #a09a94;
   }
 
@@ -325,19 +233,9 @@
     margin: 0 0 0.5rem 0;
   }
 
-  .starfield {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    image-rendering: pixelated;
-    z-index: 0;
-  }
-
   .desk {
-    position: relative;
-    z-index: 1;
     min-height: 100vh;
+    background: var(--bg-desk);
     display: flex;
     flex-direction: column;
     align-items: center;
