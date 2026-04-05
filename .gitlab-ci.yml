@@ -1,0 +1,38 @@
+stages:
+  - build
+  - deploy
+
+.build:
+  stage: build
+  services:
+    - docker:dind-rootless
+  before_script:
+    - mkdir -p ~/.docker
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+
+Build :
+  extends: .build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  variables:
+    TAG: $CI_REGISTRY_IMAGE:latest
+  script:
+    - docker build
+      --cache-from type=registry,ref=$TAG
+      --cache-to type=inline
+      -t $TAG
+      --push
+      .
+
+Deploy:
+  stage: deploy
+  image: curlimages/curl
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - |
+      curl --request POST \
+           --url https://vhap-update-collective.vanutp.dev/update \
+           --header "Content-Type: application/json" \
+           --data '{"key":"'$UPDATE_POST_KEY'"}' \
+           --fail
