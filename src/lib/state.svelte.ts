@@ -21,4 +21,5 @@ export const pages = [
   { path: "/join", num: 2 },
   { path: "/widgets", num: 3 },
   { path: "/about", num: 4 },
+  { path: "/manage", num: 5 },
 ];
