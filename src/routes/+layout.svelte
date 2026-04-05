@@ -1,4 +1,5 @@
 <script lang="ts">
+  import '@fontsource/courier-prime';
   import favicon from '$lib/assets/favicon.svg';
   import { app, pages, accents, accentNames } from '$lib/state.svelte';
   import { page } from '$app/state';
@@ -115,8 +116,6 @@
 </div>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
-
   :global(:root) {
     --bg-page: #e8e0d0;
     --bg-page-border: #c8c0b4;
