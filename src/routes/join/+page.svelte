@@ -28,7 +28,7 @@
     <span class="sep">&middot;</span>
     <span class="check-item"><span class="check"></span> Add a widget</span>
     <span class="sep">&middot;</span>
-    <span class="check-item"><span class="check"></span> <a href="/manage">Register your site</a></span>
+    <span class="check-item"><span class="check"></span> <a href="/my">Register your site</a></span>
   </div>
 
   <div class="two-cols">
@@ -50,7 +50,6 @@
         <code>GET /random → 307</code>
         <code>GET /first → 307</code>
       </div>
-      <a class="gallery-link" href="/widgets">More widgets &rarr;&nbsp;p.3</a>
     </div>
 
     <div class="divider"></div>
@@ -75,20 +74,9 @@
     </div>
   </div>
 
-  <div class="how-it-works lore">
-    <div class="flow">
-      <span class="flow-node">Visitor</span>
-      <span class="flow-arrow">&rarr;</span>
-      <span class="flow-node">Your widget</span>
-      <span class="flow-arrow">&rarr;</span>
-      <span class="flow-node accent">foxr.ing</span>
-      <span class="flow-arrow">&rarr;</span>
-      <span class="flow-node">Next site</span>
-      <span class="flow-arrow">&rarr;</span>
-      <span class="flow-node">...</span>
-      <span class="flow-arrow">&rarr;</span>
-      <span class="flow-node">Your widget</span>
-    </div>
+  <div class="bottom-links">
+    <a class="page-link" href="/widgets">Widget gallery &rarr;&nbsp;p.3</a>
+    <a class="page-link" href="/my">Manage your sites &rarr;&nbsp;p.5</a>
   </div>
 </div>
 
@@ -128,6 +116,7 @@
     display: flex;
     gap: 1.25rem;
     width: 100%;
+    flex: 1;
   }
 
   .col {
@@ -220,46 +209,20 @@
   }
   .copy-btn:hover { background: var(--accent-dark); }
 
-  .how-it-works {
-    width: 100%;
-    text-align: center;
-    font-style: normal;
-  }
-  .flow {
+  .bottom-links {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
   }
-  .flow-node {
-    background: var(--code-bg);
-    color: var(--code-text);
-    padding: 0.2rem 0.5rem;
-    border-radius: 3px;
-    font-size: 10px;
-    font-family: 'Courier Prime', monospace;
-  }
-  .flow-node.accent {
-    background: var(--accent);
-    color: white;
-    font-weight: bold;
-  }
-  .flow-arrow {
-    color: var(--text-muted);
-    font-size: 12px;
-  }
-
-  .gallery-link {
+  .page-link {
     font-size: 12px;
     font-weight: bold;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--accent);
     text-decoration: none;
-    text-align: right;
   }
-  .gallery-link:hover { text-decoration: underline; }
+  .page-link:hover { text-decoration: underline; }
 
   @media (max-width: 700px) {
     .two-cols {
