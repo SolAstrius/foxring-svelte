@@ -67,7 +67,7 @@
     </div>
 
     <div class="sidebar-links">
-      <a class="sidebar-badge" href="https://foxlab.dev">
+      <a class="sidebar-badge" href="https://foxlab.dev/foxring/">
         {#if app.trunic}<RuneText ipa="sɔɹs koʊd" />{:else}Src. Code{/if}
       </a>
       <a class="sidebar-badge" href="https://foxr.ing/docs">
