@@ -131,7 +131,7 @@
   }
   .credits :global(.credit-link:hover) { text-decoration: underline; }
 
-  @media (max-width: 700px) {
+  @media (max-width: 865px) {
     .spread {
       flex-direction: column;
       margin: -1.5rem;

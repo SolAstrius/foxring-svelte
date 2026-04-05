@@ -240,7 +240,7 @@
   }
   .back:hover { text-decoration: underline; }
 
-  @media (max-width: 700px) {
+  @media (max-width: 865px) {
     .form-row { flex-direction: column; }
   }
 </style>

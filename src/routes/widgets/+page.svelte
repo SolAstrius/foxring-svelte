@@ -248,7 +248,7 @@
   }
   .back:hover { text-decoration: underline; }
 
-  @media (max-width: 700px) {
+  @media (max-width: 865px) {
     .grid {
       grid-template-columns: 1fr;
     }

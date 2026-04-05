@@ -28,8 +28,6 @@
 </script>
 
 <div class="left">
-  <img class="fox" src="/fox.gif" alt="fox" />
-
   <div class="lore">
     {#if app.trunic}
       <RuneText ipa="tɹævəl ðə ɹɪŋ dɪskəvɝ wət əðɝz hæv faʊnd" />
@@ -38,10 +36,44 @@
     {/if}
   </div>
 
-  <div class="ring-nav">
-    <a href="/prev?from=foxr.ing">&larr;&nbsp;Prev</a>
-    <a href="/random"><Dices size={18} /></a>
-    <a href="/next?from=foxr.ing">Next&nbsp;&rarr;</a>
+  <div class="fox-frame"><img class="fox" src="/fox.gif" alt="fox" /></div>
+
+  <div class="ring-nav" class:trunic={app.trunic}>
+    <a href="/random">
+      {#if app.trunic}<RuneText ipa="vɛntʃɝ fɔɹθ" />{:else}<span class="venture-text">Venture forth</span>{/if}
+      <span class="dots"></span>
+      <Dices size={18} />
+    </a>
+  </div>
+
+  <div class="left-bottom">
+    <div class="news">
+      <div class="news-header">
+        {#if app.trunic}<RuneText ipa="læst nuz" />{:else}Last News{/if}
+      </div>
+      <div class="news-entry">
+        <span class="news-date">2025-04-06</span>
+        {#if app.trunic}
+          <RuneText ipa="ðə ɹɪŋ ɪz oʊpən wɛlkəm tɹævəlɝ" />
+        {:else}
+          The ring is open. Welcome, traveler.
+        {/if}
+      </div>
+    </div>
+
+    <div class="ring-status">
+      <span class="status-indicator"></span>
+      {sites.filter(s => isOnline(s)).length}/{sites.length} online
+    </div>
+
+    <div class="sidebar-links">
+      <a class="sidebar-badge" href="https://foxlab.dev">
+        {#if app.trunic}<RuneText ipa="sɔɹs koʊd" />{:else}Src. Code{/if}
+      </a>
+      <a class="sidebar-badge" href="https://foxr.ing/docs">
+        {#if app.trunic}<RuneText ipa="eɪpiːaɪ dɑks" />{:else}API Docs{/if}
+      </a>
+    </div>
   </div>
 </div>
 
@@ -84,10 +116,10 @@
   .left {
     flex: 0 0 auto;
     width: 240px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     gap: 0.5rem;
-    align-content: start;
   }
 
   .right {
@@ -97,10 +129,25 @@
     gap: 1.25rem;
   }
 
-  .fox { width: 160px; image-rendering: pixelated; grid-column: 1 / -1; justify-self: center; }
+  .fox-frame {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 4px dashed color-mix(in srgb, var(--accent) 60%, transparent);
+    box-sizing: border-box;
+    margin: auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+  .fox {
+    width: 75%;
+    image-rendering: pixelated;
+  }
 
   .lore {
-    grid-column: 1 / -1;
+    margin-top: calc(var(--fs-xl) + 1rem + 1.25rem);
   }
 
   .box {
@@ -149,20 +196,116 @@
   }
   .page-ref:hover { text-decoration: underline; }
 
-  .ring-nav { display: contents; }
-  .ring-nav a {
-    font-family: inherit; font-size: var(--fs-xs); font-weight: bold;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    background: var(--btn-bg); border: 2px solid var(--btn-border); border-radius: 6px;
-    padding: 0.4rem 0.9rem; cursor: pointer; color: var(--text);
-    white-space: nowrap; box-shadow: 2px 2px 0 var(--shadow-box);
-    text-decoration: none; text-align: center;
-    display: flex; align-items: center; justify-content: center;
+  .left-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
   }
-  .ring-nav a:hover { background: var(--accent); border-color: var(--accent); color: white; box-shadow: 2px 2px 0 var(--accent-dark); text-decoration: none; }
 
-  @media (max-width: 700px) {
-    .left { width: 100%; }
+  .news {
+    border: 1px solid var(--border-lore);
+    overflow: hidden;
+    font-size: var(--fs-xs);
+  }
+  .news-header {
+    background: var(--accent);
+    color: white;
+    font-size: var(--fs-xs);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem;
+  }
+  .news-entry {
+    padding: 0.4rem 0.5rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+  .news-date {
+    color: var(--accent);
+    font-weight: bold;
+    margin-right: 0.3rem;
+  }
+
+  .ring-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    border: 1px solid var(--border-lore);
+    padding: 0.3rem 0.5rem;
+  }
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #5a9e6f;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .sidebar-links {
+    display: flex;
+    gap: 0.4rem;
+  }
+  .sidebar-badge {
+    flex: 1;
+    text-align: center;
+    font-size: var(--fs-xs);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.4rem 0.5rem 0.22rem;
+    border: 1px solid var(--border-lore);
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .sidebar-badge:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+
+  .ring-nav { grid-column: 1 / -1; text-align: center; }
+  .ring-nav a {
+    font-size: var(--fs-sm); font-weight: bold;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+    display: flex; align-items: baseline; justify-content: space-between;
+    width: 100%;
+  }
+  .venture-text { position: relative; left: 1px; }
+  .ring-nav a :global(svg) { position: relative; top: 0.2em; flex-shrink: 0; }
+  .dots {
+    flex: 1;
+    overflow: hidden;
+    margin: 0 0.3rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    height: 1em;
+    line-height: 1;
+  }
+  .dots::before {
+    content: '.....................................................';
+    white-space: nowrap;
+  }
+  .ring-nav.trunic a { align-items: center; }
+  .ring-nav.trunic a :global(svg) { top: 0; }
+  .ring-nav a:hover { text-decoration: underline; }
+
+  @media (max-width: 865px) {
+    .left { display: contents; }
+    .fox-frame { border: none; aspect-ratio: auto; margin: 0 auto; width: auto; order: -1; }
     .fox { width: 120px; }
+    .right { order: 1; }
+    .lore { order: 2; margin-top: 0; }
+    .left-bottom { order: 3; }
+    .ring-nav { order: 4; }
   }
 </style>

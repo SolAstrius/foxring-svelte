@@ -360,7 +360,7 @@
   }
   footer a { color: #a0a0a8; }
 
-  @media (max-width: 700px) {
+  @media (max-width: 865px) {
     .desk { background: var(--bg-page); }
     .page { aspect-ratio: auto; border: none; box-shadow: none; }
     .page-inner { flex-direction: column; padding: 1.5rem; gap: 1.4rem; }

@@ -224,7 +224,7 @@
   }
   .page-link:hover { text-decoration: underline; }
 
-  @media (max-width: 700px) {
+  @media (max-width: 865px) {
     .two-cols {
       flex-direction: column;
     }
