@@ -6,7 +6,6 @@
   import { Trash2 } from "lucide-svelte";
 
   let copied = $state(false);
-  let exampleJson = $state("");
 
   const base = __BACKEND_URL__;
   const pub = __PUBLIC_URL__;
@@ -29,26 +28,6 @@
       user = await getUser();
       if (user) mySites = await getMySites();
       loading = false;
-    })();
-    (async () => {
-      try {
-        const res = await fetch(`${base}/first/json`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data) { exampleJson = JSON.stringify(data, null, 2); return; }
-        }
-      } catch {}
-      exampleJson = `{
-  "id": 1,
-  "name": "Example Site",
-  "url": "https://example.com",
-  "faviconName": "example.png",
-  "status": {
-    "status": "success",
-    "statusCode": 200,
-    "responseTimeMs": 142
-  }
-}`;
     })();
   });
 
@@ -116,37 +95,6 @@
         <code>GET /first → 307</code>
       </div>
       <a class="gallery-link" href="/widgets">More widgets &rarr;&nbsp;p.3</a>
-
-      <!-- ring chain doodle -->
-      <svg class="doodle doodle-chain" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="40" cy="25" r="14" stroke="var(--border-lore)" stroke-width="1.5" stroke-dasharray="3 2" />
-        <circle cx="75" cy="25" r="14" stroke="var(--border-lore)" stroke-width="1.5" stroke-dasharray="3 2" />
-        <circle cx="110" cy="25" r="14" stroke="var(--border-lore)" stroke-width="1.5" stroke-dasharray="3 2" />
-        <circle cx="145" cy="25" r="14" stroke="var(--border-lore)" stroke-width="1.5" stroke-dasharray="3 2" />
-        <circle cx="75" cy="25" r="5" fill="var(--accent)" opacity="0.3" />
-        <line x1="8" y1="25" x2="26" y2="25" stroke="var(--border-lore)" stroke-width="1" stroke-dasharray="2 2" />
-        <line x1="159" y1="25" x2="192" y2="25" stroke="var(--border-lore)" stroke-width="1" stroke-dasharray="2 2" />
-        <path d="M186 20 L194 25 L186 30" stroke="var(--border-lore)" stroke-width="1.5" fill="none" />
-        <path d="M14 20 L6 25 L14 30" stroke="var(--border-lore)" stroke-width="1.5" fill="none" />
-      </svg>
-
-      <div class="how-it-works lore">
-        <div class="flow-title">How the ring works</div>
-        <div class="flow">
-          <span class="flow-node">Visitor</span>
-          <span class="flow-arrow">&rarr;</span>
-          <span class="flow-node">Your widget</span>
-          <span class="flow-arrow">&rarr;</span>
-          <span class="flow-node accent">foxr.ing</span>
-          <span class="flow-arrow">&rarr;</span>
-          <span class="flow-node">Next site</span>
-        </div>
-        <p class="flow-note">
-          The ring API looks up who's after you
-          and redirects the visitor there. No
-          client&#8209;side JavaScript needed.
-        </p>
-      </div>
     </div>
 
     <div class="divider"></div>
@@ -197,36 +145,26 @@
         <code>GET /first/json</code>
         <code>GET /list</code>
       </div>
-      <div class="path-label">Example response</div>
-      <div class="code-wrap">
-        <pre>{exampleJson || "Loading..."}</pre>
-      </div>
       <p class="path-desc response-hint">
+        Returns <code>{`{id, name, url, faviconName, status}`}</code>.
         All endpoints serve CORS <code>*</code>.
       </p>
+    </div>
+  </div>
 
-      <!-- compass rose / star doodle -->
-      <svg class="doodle doodle-compass" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="40" cy="40" r="28" stroke="var(--border-lore)" stroke-width="1" stroke-dasharray="4 3" />
-        <circle cx="40" cy="40" r="16" stroke="var(--border-lore)" stroke-width="1" />
-        <circle cx="40" cy="40" r="3" fill="var(--accent)" opacity="0.5" />
-        <!-- cardinal points -->
-        <line x1="40" y1="8" x2="40" y2="22" stroke="var(--accent)" stroke-width="1.5" opacity="0.6" />
-        <line x1="40" y1="58" x2="40" y2="72" stroke="var(--border-lore)" stroke-width="1" />
-        <line x1="8" y1="40" x2="22" y2="40" stroke="var(--border-lore)" stroke-width="1" />
-        <line x1="58" y1="40" x2="72" y2="40" stroke="var(--border-lore)" stroke-width="1" />
-        <!-- diamond tips -->
-        <polygon points="40,8 37,16 40,14 43,16" fill="var(--accent)" opacity="0.6" />
-        <!-- diagonals -->
-        <line x1="18" y1="18" x2="26" y2="26" stroke="var(--border-lore)" stroke-width="0.75" />
-        <line x1="62" y1="18" x2="54" y2="26" stroke="var(--border-lore)" stroke-width="0.75" />
-        <line x1="18" y1="62" x2="26" y2="54" stroke="var(--border-lore)" stroke-width="0.75" />
-        <line x1="62" y1="62" x2="54" y2="54" stroke="var(--border-lore)" stroke-width="0.75" />
-        <!-- tick marks on circle -->
-        <line x1="40" y1="12" x2="40" y2="15" stroke="var(--border-lore)" stroke-width="0.75" />
-        <line x1="56" y1="14" x2="54.5" y2="17" stroke="var(--border-lore)" stroke-width="0.75" />
-        <line x1="66" y1="24" x2="63" y2="25.5" stroke="var(--border-lore)" stroke-width="0.75" />
-      </svg>
+  <div class="how-it-works lore">
+    <div class="flow">
+      <span class="flow-node">Visitor</span>
+      <span class="flow-arrow">&rarr;</span>
+      <span class="flow-node">Your widget</span>
+      <span class="flow-arrow">&rarr;</span>
+      <span class="flow-node accent">foxr.ing</span>
+      <span class="flow-arrow">&rarr;</span>
+      <span class="flow-node">Next site</span>
+      <span class="flow-arrow">&rarr;</span>
+      <span class="flow-node">...</span>
+      <span class="flow-arrow">&rarr;</span>
+      <span class="flow-node">Your widget</span>
     </div>
   </div>
 </div>
@@ -267,7 +205,6 @@
     display: flex;
     gap: 1.25rem;
     width: 100%;
-    flex: 1;
   }
 
   .col {
@@ -455,17 +392,9 @@
   }
 
   .how-it-works {
-    margin-top: auto;
+    width: 100%;
     text-align: center;
     font-style: normal;
-  }
-  .flow-title {
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
   }
   .flow {
     display: flex;
@@ -490,29 +419,6 @@
   .flow-arrow {
     color: var(--text-muted);
     font-size: 12px;
-  }
-  .flow-note {
-    font-size: 11px;
-    line-height: 1.5;
-    color: var(--text-muted);
-    margin: 0.5rem 0 0;
-    font-style: italic;
-  }
-
-  .doodle {
-    align-self: center;
-    opacity: 0.7;
-    flex-shrink: 0;
-  }
-  .doodle-chain {
-    width: 160px;
-    height: 40px;
-    margin: 0.25rem 0;
-  }
-  .doodle-compass {
-    width: 70px;
-    height: 70px;
-    margin-top: auto;
   }
 
   .gallery-link {
