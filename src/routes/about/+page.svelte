@@ -84,14 +84,14 @@
   }
 
   .dark-header {
-    font-size: 18px;
+    font-size: var(--fs-lg);
     font-weight: bold;
     letter-spacing: 0.1em;
     color: var(--dark-panel-heading);
   }
 
   .dark-body {
-    font-size: 13px;
+    font-size: var(--fs-sm);
     line-height: 1.8;
     color: var(--dark-panel-muted);
   }
@@ -107,7 +107,7 @@
   }
 
   .section h3 {
-    font-size: 13px;
+    font-size: var(--fs-sm);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin: 0 0 0.5rem 0;
@@ -115,7 +115,7 @@
   }
 
   .section p {
-    font-size: 13px;
+    font-size: var(--fs-sm);
     line-height: 1.7;
     color: var(--text-muted);
     margin: 0;

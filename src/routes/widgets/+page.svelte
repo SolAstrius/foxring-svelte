@@ -157,7 +157,7 @@
 
   .alias-input {
     font-family: 'Courier Prime', monospace;
-    font-size: 13px;
+    font-size: var(--fs-sm);
     text-align: center;
     padding: 0.4rem 1.25rem;
     border: 2px solid var(--btn-border);
@@ -196,7 +196,7 @@
   }
 
   .card-name {
-    font-size: 11px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -216,7 +216,7 @@
 
   .copy-btn {
     font-family: 'Courier Prime', monospace;
-    font-size: 10px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -230,7 +230,7 @@
   .copy-btn:hover { background: var(--accent-dark); }
 
   .note {
-    font-size: 12px;
+    font-size: var(--fs-xs);
     color: var(--text-muted);
     text-align: center;
     font-style: italic;
@@ -239,7 +239,7 @@
   }
 
   .back {
-    font-size: 12px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     letter-spacing: 0.08em;
     text-transform: uppercase;

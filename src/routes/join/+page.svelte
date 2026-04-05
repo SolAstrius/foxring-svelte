@@ -93,7 +93,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 12px;
+    font-size: var(--fs-xs);
     color: var(--text-muted);
     flex-wrap: wrap;
     justify-content: center;
@@ -134,7 +134,7 @@
   }
 
   .path-label {
-    font-size: 12px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -142,7 +142,7 @@
   }
 
   .path-desc {
-    font-size: 12px;
+    font-size: var(--fs-xs);
     line-height: 1.6;
     color: var(--text-muted);
     margin: 0;
@@ -152,7 +152,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    font-size: 11px;
+    font-size: var(--fs-xs);
     color: var(--text-muted);
   }
   .endpoints code {
@@ -160,19 +160,19 @@
     color: var(--code-text);
     padding: 0.2rem 0.5rem;
     border-radius: 3px;
-    font-size: 10px;
+    font-size: var(--fs-xs);
     font-family: 'Courier Prime', monospace;
   }
 
   .response-hint {
-    font-size: 11px;
+    font-size: var(--fs-xs);
     line-height: 1.6;
   }
   .response-hint code {
     background: var(--bg-lore);
     padding: 0.1rem 0.3rem;
     border-radius: 3px;
-    font-size: 10px;
+    font-size: var(--fs-xs);
   }
 
   .code-wrap {
@@ -184,7 +184,7 @@
   .code-wrap pre {
     color: var(--code-text);
     font-family: 'Courier Prime', monospace;
-    font-size: 10px;
+    font-size: var(--fs-xs);
     line-height: 1.5;
     padding: 0.5rem 0.6rem;
     margin: 0;
@@ -196,7 +196,7 @@
     top: 0.3rem;
     right: 0.3rem;
     font-family: 'Courier Prime', monospace;
-    font-size: 9px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -215,7 +215,7 @@
     width: 100%;
   }
   .page-link {
-    font-size: 12px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     letter-spacing: 0.08em;
     text-transform: uppercase;

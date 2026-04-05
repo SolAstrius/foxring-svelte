@@ -146,7 +146,7 @@
     gap: 0.5rem;
     padding: 0.4rem 0;
     border-bottom: 1px dashed var(--border-box);
-    font-size: 12px;
+    font-size: var(--fs-xs);
   }
   .site-name {
     font-weight: bold;
@@ -154,7 +154,7 @@
   }
   .site-url {
     color: var(--text-muted);
-    font-size: 10px;
+    font-size: var(--fs-xs);
     margin-left: auto;
   }
   .delete-btn {
@@ -175,7 +175,7 @@
     cursor: pointer;
     padding: 0.1rem 0.3rem;
     font-family: 'Courier Prime', monospace;
-    font-size: 10px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -191,7 +191,7 @@
   }
   .field {
     font-family: 'Courier Prime', monospace;
-    font-size: 11px;
+    font-size: var(--fs-xs);
     padding: 0.35rem 0.6rem;
     border: 2px solid var(--btn-border);
     border-radius: 4px;
@@ -206,7 +206,7 @@
 
   .btn {
     font-family: 'Courier Prime', monospace;
-    font-size: 11px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -222,16 +222,16 @@
   .btn:hover { background: var(--accent-dark); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  .muted { color: var(--text-muted); font-size: 12px; margin: 0; }
+  .muted { color: var(--text-muted); font-size: var(--fs-xs); margin: 0; }
 
   .error {
     color: #c44;
-    font-size: 11px;
+    font-size: var(--fs-xs);
     margin: 0.25rem 0 0;
   }
 
   .back {
-    font-size: 12px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     letter-spacing: 0.08em;
     text-transform: uppercase;

@@ -112,7 +112,7 @@
   }
 
   .member-count {
-    font-size: 11px;
+    font-size: var(--fs-xs);
     color: var(--text-muted);
     font-weight: normal;
   }
@@ -123,23 +123,23 @@
     padding: 0.35rem 0; border-bottom: 1px dashed var(--border-box);
   }
   .site-list li.offline { opacity: 0.4; }
-  .idx { color: var(--accent); font-weight: bold; min-width: 1.5em; text-align: right; font-size: 12px; }
+  .idx { color: var(--accent); font-weight: bold; min-width: 1.5em; text-align: right; font-size: var(--fs-xs); }
   .status-dot {
     width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
     background: var(--text-muted);
   }
   .status-dot.online { background: #5a9e6f; }
   .site-icon { width: 14px; height: 14px; flex-shrink: 0; border-radius: 2px; }
-  .site-list a { color: var(--text); text-decoration: none; font-weight: bold; font-size: 13px; }
+  .site-list a { color: var(--text); text-decoration: none; font-weight: bold; font-size: var(--fs-sm); }
   .site-list li:not(.offline) a:hover { color: var(--accent); }
-  .desc { color: var(--text-muted); font-size: 11px; margin-left: auto; white-space: nowrap; }
+  .desc { color: var(--text-muted); font-size: var(--fs-xs); margin-left: auto; white-space: nowrap; }
 
-  .empty { color: var(--text-muted); font-size: 12px; font-style: italic; margin: 0.5rem 0; }
+  .empty { color: var(--text-muted); font-size: var(--fs-sm); font-style: italic; margin: 0.5rem 0; }
 
   .page-ref {
     display: block;
     margin-top: 0.6rem;
-    font-size: 12px;
+    font-size: var(--fs-xs);
     font-weight: bold;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -151,7 +151,7 @@
 
   .ring-nav { display: contents; }
   .ring-nav a {
-    font-family: inherit; font-size: 12px; font-weight: bold;
+    font-family: inherit; font-size: var(--fs-xs); font-weight: bold;
     letter-spacing: 0.08em; text-transform: uppercase;
     background: var(--btn-bg); border: 2px solid var(--btn-border); border-radius: 6px;
     padding: 0.4rem 0.9rem; cursor: pointer; color: var(--text);

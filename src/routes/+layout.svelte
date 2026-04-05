@@ -118,6 +118,12 @@
   @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
 
   :global(:root) {
+    --fs-xs: 13px;
+    --fs-sm: 15px;
+    --fs-base: 16px;
+    --fs-lg: 20px;
+    --fs-xl: 24px;
+
     --bg-page: #e8e0d0;
     --bg-page-border: #c8c0b4;
     --bg-box: #d4dfeb;
@@ -174,7 +180,7 @@
   :global(body) {
     margin: 0;
     font-family: 'Courier Prime', monospace;
-    font-size: 14px;
+    font-size: var(--fs-base);
     color: var(--text);
   }
 
@@ -191,7 +197,7 @@
     background: var(--accent);
     color: white;
     text-align: center;
-    font-size: 20px;
+    font-size: var(--fs-xl);
     font-weight: bold;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -217,7 +223,7 @@
     font-style: italic;
     color: var(--text-muted);
     line-height: 1.7;
-    font-size: 13px;
+    font-size: var(--fs-sm);
     box-shadow: 3px 3px 0 var(--shadow-lore);
   }
 
@@ -229,7 +235,7 @@
     box-shadow: 3px 3px 0 var(--shadow-box);
   }
   :global(.box h3) {
-    font-size: 13px;
+    font-size: var(--fs-sm);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin: 0 0 0.5rem 0;
@@ -291,7 +297,7 @@
   .page-inner {
     flex: 1;
     display: flex;
-    gap: 4.2rem;
+    gap: 2.7rem;
     padding: 1.5rem 2.5rem 2rem;
     position: relative;
     z-index: 1;
@@ -302,7 +308,7 @@
     bottom: 0.75rem;
     right: 1.25rem;
     font-weight: bold;
-    font-size: 20px;
+    font-size: var(--fs-xl);
     color: var(--accent);
     z-index: 1;
   }
@@ -313,7 +319,7 @@
   }
 
   .toggle {
-    font-family: 'Courier Prime', monospace; font-size: 11px; font-weight: bold;
+    font-family: 'Courier Prime', monospace; font-size: var(--fs-xs); font-weight: bold;
     letter-spacing: 0.08em; text-transform: uppercase;
     background: var(--btn-bg); border: 2px solid var(--btn-border); border-radius: 6px;
     padding: 0.4rem 0.8rem; cursor: pointer; color: var(--text);
@@ -348,7 +354,7 @@
 
   footer {
     padding: 0.75rem;
-    font-size: 11px;
+    font-size: var(--fs-xs);
     color: #7a7a80;
     text-align: center;
   }
