@@ -126,55 +126,63 @@
 
     --bg-page: #e8e0d0;
     --bg-page-border: #c8c0b4;
-    --bg-box: #d4dfeb;
-    --border-box: #8faabe;
-    --shadow-box: #8faabe;
-    --bg-lore: #ece4d2;
-    --border-lore: #c8bea8;
-    --shadow-lore: #c8bea8;
+    --bg-box: color-mix(in srgb, var(--accent) 12%, #e8e0d0);
+    --border-box: color-mix(in srgb, var(--accent) 50%, #b0b0a8);
+    --shadow-box: color-mix(in srgb, var(--accent) 40%, #b0b0a8);
+    --bg-lore: color-mix(in srgb, var(--accent) 6%, #ece4d2);
+    --border-lore: color-mix(in srgb, var(--accent) 15%, #c8bea8);
+    --shadow-lore: color-mix(in srgb, var(--accent) 15%, #c8bea8);
     --text: #2e2a25;
     --text-muted: #5a5550;
     --accent: #c46b7a;
     --accent-dark: #a35663;
     --accent-darker: #8a3a4a;
-    --corner: #c8bea8;
+    --corner: color-mix(in srgb, var(--accent) 15%, #c8bea8);
     --code-bg: #2e2a25;
     --code-text: #e8e0d4;
     --btn-bg: white;
-    --btn-border: #8faabe;
-    --divider: #c8bea8;
+    --btn-border: color-mix(in srgb, var(--accent) 50%, #b0b0a8);
+    --divider: color-mix(in srgb, var(--accent) 15%, #c8bea8);
     --dark-panel-bg: #1e1e24;
     --dark-panel-text: #d4d0cc;
     --dark-panel-heading: #e8e0d4;
     --bg-desk: #3a3a42;
     --dark-panel-muted: #a09a94;
+    --online: #5a9e6f;
+    --error: #cc4444;
+    --footer-text: #7a7a80;
+    --footer-link: #a0a0a8;
   }
 
   :global(:root[data-theme="dark"]) {
     --bg-page: #1e1e24;
     --bg-page-border: #3a3a42;
-    --bg-box: #242830;
-    --border-box: #4a5a6e;
-    --shadow-box: #12141a;
-    --bg-lore: #22201c;
-    --border-lore: #4a4840;
-    --shadow-lore: #12100e;
+    --bg-box: color-mix(in srgb, var(--accent) 8%, #161620);
+    --border-box: color-mix(in srgb, var(--accent) 25%, #4a4a52);
+    --shadow-box: transparent;
+    --bg-lore: color-mix(in srgb, var(--accent) 6%, #1a1a1e);
+    --border-lore: color-mix(in srgb, var(--accent) 18%, #4a4840);
+    --shadow-lore: transparent;
     --text: #e8e0d4;
     --text-muted: #a09a94;
     --accent: #d4808e;
     --accent-dark: #b35a68;
     --accent-darker: #8a3a4a;
-    --corner: #4a4840;
+    --corner: color-mix(in srgb, var(--accent) 12%, #4a4840);
     --code-bg: #121018;
     --code-text: #e8e0d4;
     --btn-bg: #2a2a30;
-    --btn-border: #4a5a6e;
-    --divider: #3a3a42;
+    --btn-border: color-mix(in srgb, var(--accent) 30%, #4a4a52);
+    --divider: color-mix(in srgb, var(--accent) 10%, #3a3a42);
     --dark-panel-bg: #121218;
     --dark-panel-text: #d4d0cc;
     --dark-panel-heading: #e8e0d4;
     --bg-desk: #1a1a20;
     --dark-panel-muted: #a09a94;
+    --online: #5a9e6f;
+    --error: #cc4444;
+    --footer-text: #7a7a80;
+    --footer-link: #a0a0a8;
   }
 
   :global(body) {
@@ -297,7 +305,7 @@
   .page-inner {
     flex: 1;
     display: flex;
-    gap: 2.7rem;
+    gap: 1.75rem;
     padding: 1.5rem 2.5rem 2rem;
     position: relative;
     z-index: 1;
@@ -355,10 +363,10 @@
   footer {
     padding: 0.75rem;
     font-size: var(--fs-xs);
-    color: #7a7a80;
+    color: var(--footer-text);
     text-align: center;
   }
-  footer a { color: #a0a0a8; }
+  footer a { color: var(--footer-link); }
 
   @media (max-width: 865px) {
     .desk { background: var(--bg-page); }

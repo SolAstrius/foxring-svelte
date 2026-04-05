@@ -175,7 +175,7 @@
     width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
     background: var(--text-muted);
   }
-  .status-dot.online { background: #5a9e6f; }
+  .status-dot.online { background: var(--online); }
   .site-icon { width: 14px; height: 14px; flex-shrink: 0; border-radius: 2px; }
   .site-list a { color: var(--text); text-decoration: none; font-weight: bold; font-size: var(--fs-sm); }
   .site-list li:not(.offline) a:hover { color: var(--accent); }
@@ -241,7 +241,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #5a9e6f;
+    background: var(--online);
     animation: blink 1s step-end infinite;
   }
   @keyframes blink {

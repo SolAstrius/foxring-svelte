@@ -171,7 +171,7 @@
   .confirm-btn {
     background: none;
     border: none;
-    color: #c44;
+    color: var(--error);
     cursor: pointer;
     padding: 0.1rem 0.3rem;
     font-family: 'Courier Prime', monospace;
@@ -225,7 +225,7 @@
   .muted { color: var(--text-muted); font-size: var(--fs-xs); margin: 0; }
 
   .error {
-    color: #c44;
+    color: var(--error);
     font-size: var(--fs-xs);
     margin: 0.25rem 0 0;
   }
