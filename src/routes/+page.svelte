@@ -1,10 +1,26 @@
 <script lang="ts">
   import RuneText from "$lib/RuneText.svelte";
   import { app } from "$lib/state.svelte";
-  import { members } from "$lib/members";
+  import type { Site } from "$lib/api";
   import { Dices } from "lucide-svelte";
 
+  let { data } = $props();
+
   const base = __BACKEND_URL__;
+  let sites = $derived(data.sites);
+
+  function faviconUrl(site: Site): string | null {
+    if (!site.faviconName) return null;
+    return `${base}/favicons/${site.faviconName}`;
+  }
+
+  function isOnline(site: Site): boolean {
+    return site.status?.status === 'success';
+  }
+
+  function hostname(url: string): string {
+    try { return new URL(url).hostname; } catch { return url; }
+  }
 </script>
 
 <div class="left">
@@ -33,26 +49,27 @@
   <div class="box">
     <h3>
       {#if app.trunic}<RuneText ipa="ɹɪŋ mɛmbɝz" />{:else}Ring Members{/if}
+      {#if sites.length > 0}
+        <span class="member-count">{sites.length}</span>
+      {/if}
     </h3>
-    <ul class="site-list">
-      {#each members as member, i}
-        <li>
-          <span class="idx">{i + 1}</span>
-          <a href={member.url}>{member.title}</a>
-          <span class="desc">{member.alias}</span>
-        </li>
-      {/each}
-      {#if members.length < 10}
-        {@const labels = ["X", "Y", "Z"]}
-        {@const count = Math.min(10 - members.length, 3)}
-        {#each { length: count } as _, j}
-          <li class="ghost">
-            <span class="idx">{labels[j]}</span>
-            <span class="ghost-name">{j === count - 1 ? "maybe you?" : "???"}</span>
+    {#if sites.length > 0}
+      <ul class="site-list">
+        {#each sites as site, i}
+          <li class:offline={!isOnline(site)}>
+            <span class="idx">{i + 1}</span>
+            <span class="status-dot" class:online={isOnline(site)} title={isOnline(site) ? 'online' : 'offline'}></span>
+            {#if faviconUrl(site)}
+              <img class="site-icon" src={faviconUrl(site)} alt="" />
+            {/if}
+            <a href={site.url}>{site.name}</a>
+            <span class="desc">{hostname(site.url)}</span>
           </li>
         {/each}
-      {/if}
-    </ul>
+      </ul>
+    {:else}
+      <p class="empty">Could not load ring members.</p>
+    {/if}
     <a class="page-ref" href="/join">
       {#if app.trunic}<RuneText ipa="dʒɔɪn ðə ɹɪŋ" />{:else}Join the Ring{/if}&nbsp;&rarr;&nbsp;p.2
     </a>
@@ -90,19 +107,30 @@
     margin-bottom: 0.6rem;
   }
 
-  .site-list { list-style: none; padding-left: 0; }
-  .site-list li {
-    display: flex; align-items: baseline; gap: 0.75rem;
-    padding: 0.4rem 0; border-bottom: 1px dashed var(--border-box);
+  .member-count {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: normal;
   }
-  .idx { color: var(--accent); font-weight: bold; min-width: 1.5em; text-align: right; }
-  .site-list a { color: var(--text); text-decoration: none; font-weight: bold; }
-  .site-list a:hover { color: var(--accent); }
-  .desc { color: var(--text-muted); font-size: 12px; margin-left: auto; }
 
-  .ghost { opacity: 0.4; font-style: italic; }
-  .ghost .idx { color: var(--border-box); }
-  .ghost-name { color: var(--border-box); }
+  .site-list { list-style: none; padding-left: 0; margin: 0; }
+  .site-list li {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.35rem 0; border-bottom: 1px dashed var(--border-box);
+  }
+  .site-list li.offline { opacity: 0.4; }
+  .idx { color: var(--accent); font-weight: bold; min-width: 1.5em; text-align: right; font-size: 12px; }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    background: var(--text-muted);
+  }
+  .status-dot.online { background: #5a9e6f; }
+  .site-icon { width: 14px; height: 14px; flex-shrink: 0; border-radius: 2px; }
+  .site-list a { color: var(--text); text-decoration: none; font-weight: bold; font-size: 13px; }
+  .site-list li:not(.offline) a:hover { color: var(--accent); }
+  .desc { color: var(--text-muted); font-size: 11px; margin-left: auto; white-space: nowrap; }
+
+  .empty { color: var(--text-muted); font-size: 12px; font-style: italic; margin: 0.5rem 0; }
 
   .page-ref {
     display: block;

@@ -1,17 +1,9 @@
-export interface Member {
-  alias: string;
-  url: string;
-  title: string;
-  icon: string;
-  online: boolean;
-}
+import type { Site } from './api';
 
-export const members: Member[] = [
-  { alias: "foxring", url: "https://foxr.ing",    title: "Foxring",  icon: "/fox.gif", online: true },
-  { alias: "aaaa",    url: "https://aaaa.example", title: "AAAA",     icon: "",         online: true },
-  { alias: "bbbb",    url: "https://bbbb.example", title: "BBBB",     icon: "",         online: true },
-  { alias: "cccc",    url: "https://cccc.example", title: "CCCC",     icon: "",         online: true },
-  { alias: "dddd",    url: "https://dddd.example", title: "DDDD",     icon: "",         online: true },
-  { alias: "eeee",    url: "https://eeee.example", title: "EEEE",     icon: "",         online: true },
-  { alias: "ffff",    url: "https://ffff.example", title: "FFFF",     icon: "",         online: true },
+export const mockSites: Site[] = [
+  { id: 1, name: "Foxring",       url: "https://foxr.ing",           createdAt: "2025-01-01T00:00:00Z", faviconName: null, status: { timestamp: "", responseTimeMs: null, status: "success", statusCode: 200 } },
+  { id: 2, name: "Sol Astrius",   url: "https://solastrius.ink",     createdAt: "2025-01-01T00:00:00Z", faviconName: null, status: { timestamp: "", responseTimeMs: null, status: "success", statusCode: 200 } },
+  { id: 3, name: "vanutp",        url: "https://vanutp.dev",         createdAt: "2025-01-01T00:00:00Z", faviconName: null, status: { timestamp: "", responseTimeMs: null, status: "success", statusCode: 200 } },
+  { id: 4, name: "Example A",     url: "https://aaaa.example",       createdAt: "2025-01-01T00:00:00Z", faviconName: null, status: null },
+  { id: 5, name: "Example B",     url: "https://bbbb.example",       createdAt: "2025-01-01T00:00:00Z", faviconName: null, status: null },
 ];
