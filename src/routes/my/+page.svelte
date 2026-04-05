@@ -35,9 +35,20 @@
     }
   }
 
-  async function handleDelete(site: Site) {
-    if (await deleteSite(site.id)) {
-      mySites = mySites.filter(s => s.id !== site.id);
+  let confirmingId = $state<number | null>(null);
+  let confirmTimer: ReturnType<typeof setTimeout>;
+
+  function requestDelete(site: Site) {
+    if (confirmingId === site.id) {
+      clearTimeout(confirmTimer);
+      confirmingId = null;
+      deleteSite(site.id).then(ok => {
+        if (ok) mySites = mySites.filter(s => s.id !== site.id);
+      });
+    } else {
+      confirmingId = site.id;
+      clearTimeout(confirmTimer);
+      confirmTimer = setTimeout(() => confirmingId = null, 3000);
     }
   }
 
@@ -69,9 +80,13 @@
             <li>
               <span class="site-name">{site.name}</span>
               <span class="site-url">{site.url}</span>
-              <button class="delete-btn" onclick={() => handleDelete(site)} aria-label="Delete {site.name}">
-                <Trash2 size={12} />
-              </button>
+              {#if confirmingId === site.id}
+                <button class="confirm-btn" onclick={() => requestDelete(site)}>sure?</button>
+              {:else}
+                <button class="delete-btn" onclick={() => requestDelete(site)} aria-label="Delete {site.name}">
+                  <Trash2 size={12} />
+                </button>
+              {/if}
             </li>
           {/each}
         </ul>
@@ -153,6 +168,20 @@
     flex-shrink: 0;
   }
   .delete-btn:hover { color: var(--accent); }
+  .confirm-btn {
+    background: none;
+    border: none;
+    color: #c44;
+    cursor: pointer;
+    padding: 0.1rem 0.3rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .confirm-btn:hover { text-decoration: underline; }
 
   .add-form { margin: 0; }
   .form-row {
