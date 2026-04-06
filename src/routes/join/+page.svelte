@@ -1,8 +1,21 @@
 <script lang="ts">
   import RuneText from "$lib/RuneText.svelte";
   import { app } from "$lib/state.svelte";
+  import { getUser, getMySites } from "$lib/api";
 
   let copied = $state(false);
+  let signedIn = $state(false);
+  let hasSites = $state(false);
+
+  $effect(() => {
+    getUser().then(async u => {
+      signedIn = !!u;
+      if (u) {
+        const sites = await getMySites();
+        hasSites = sites.length > 0;
+      }
+    });
+  });
 
   const pub = __PUBLIC_URL__;
   const widgetCode = `<nav id="foxring">
@@ -42,15 +55,15 @@
 
     <ul class="checklist">
       <li>
-        <span class="check"></span>
+        <span class="check" class:done={hasSites}></span>
         <span>{#if app.trunic}<RuneText ipa="ə pɝsənəl wɛbsaɪt wɪð ə fɑksɹɪŋ wɪdʒɪt" />{:else}A personal website with a <a href="/widgets">foxring widget</a> on it{/if}</span>
       </li>
       <li>
-        <span class="check"></span>
-        <span>{#if app.trunic}<RuneText ipa="ən əkaʊnt ɑn wən" />{:else}An account on <a href="https://one.vanutp.dev/">one.vanutp.dev</a>{/if}</span>
+        <span class="check" class:done={signedIn}></span>
+        <span>{#if app.trunic}<RuneText ipa="ən əkaʊnt ɑn wən" />{:else}An account on <a href="https://one.vanutp.dev/">one.vanutp.dev</a> (<a href="https://t.me/vanutp">message @vanutp</a>){/if}</span>
       </li>
       <li>
-        <span class="check"></span>
+        <span class="check" class:done={hasSites}></span>
         <span>{#if app.trunic}<RuneText ipa="ɹɛdʒɪstɝ jɔɹ saɪt ɑn ðə ɹɪŋ" />{:else}To <a href="/my">register your site</a> on the ring{/if}</span>
       </li>
     </ul>
@@ -138,15 +151,29 @@
   }
   .checklist li {
     display: flex;
-    align-items: baseline;
+    align-items: flex-start;
     gap: 0.5rem;
   }
   .check {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border: 2px solid var(--border-box);
     border-radius: 2px;
     flex-shrink: 0;
+    margin-top: 0;
+  }
+  .check.done {
+    border-color: var(--online);
+    position: relative;
+  }
+  .check.done::after {
+    content: '✓';
+    position: absolute;
+    top: 0%;
+    left: 11%;
+    font-size: 14px;
+    line-height: 1;
+    color: var(--online);
   }
 
   .section-label {
