@@ -1,5 +1,5 @@
 <script lang="ts">
-  import '@fontsource/courier-prime';
+  import '$lib/fonts.css';
   import favicon from '$lib/assets/favicon.svg';
   import { app, pages, accents, accentNames } from '$lib/state.svelte';
   import { page } from '$app/state';
