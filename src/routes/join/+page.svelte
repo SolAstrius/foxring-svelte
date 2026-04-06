@@ -23,61 +23,73 @@
     {#if app.trunic}<RuneText ipa="dʒɔɪn ðə ɹɪŋ" />{:else}Join the Ring{/if}
   </div>
 
-  <div class="checklist">
-    <span class="check-item"><span class="check"></span> Have a personal website</span>
-    <span class="sep">&middot;</span>
-    <span class="check-item"><span class="check"></span> Add a widget</span>
-    <span class="sep">&middot;</span>
-    <span class="check-item"><span class="check"></span> <a href="/my">Register your site</a></span>
-  </div>
+  <div class="letter">
+    <p class="greeting">
+      {#if app.trunic}
+        <RuneText ipa="dɪɹ tɹævəlɝ" />
+      {:else}
+        Dear traveler,
+      {/if}
+    </p>
 
-  <div class="two-cols">
-    <div class="col">
-      <div class="path-label">Add a widget</div>
-      <p class="path-desc">
-        Plain HTML links that hit the ring API.
-        Visitors click, get 307'd to the next site.
-      </p>
-      <div class="code-wrap">
-        <pre>{widgetCode}</pre>
-        <button class="copy-btn" onclick={copyWidget}>
-          {copied ? "Copied!" : "Copy"}
-        </button>
-      </div>
-      <div class="endpoints">
-        <code>GET /next?from=url → 307</code>
-        <code>GET /prev?from=url → 307</code>
-        <code>GET /random → 307</code>
-        <code>GET /first → 307</code>
-      </div>
+    <p class="body-text">
+      {#if app.trunic}
+        <RuneText ipa="tu dʒɔɪn ðə ɹɪŋ ju nid" />
+      {:else}
+        To join the ring, you need:
+      {/if}
+    </p>
+
+    <ul class="checklist">
+      <li>
+        <span class="check"></span>
+        <span>{#if app.trunic}<RuneText ipa="ə pɝsənəl wɛbsaɪt wɪð ə fɑksɹɪŋ wɪdʒɪt" />{:else}A personal website with a <a href="/widgets">foxring widget</a> on it{/if}</span>
+      </li>
+      <li>
+        <span class="check"></span>
+        <span>{#if app.trunic}<RuneText ipa="ən əkaʊnt ɑn wən" />{:else}An account on <a href="https://one.vanutp.dev/">one.vanutp.dev</a>{/if}</span>
+      </li>
+      <li>
+        <span class="check"></span>
+        <span>{#if app.trunic}<RuneText ipa="ɹɛdʒɪstɝ jɔɹ saɪt ɑn ðə ɹɪŋ" />{:else}To <a href="/my">register your site</a> on the ring{/if}</span>
+      </li>
+    </ul>
+
+    <p class="section-label">
+      {#if app.trunic}<RuneText ipa="ðə wɪdʒɪt" />{:else}The widget{/if}
+    </p>
+
+    <div class="code-wrap">
+      <pre>{widgetCode}</pre>
+      <button class="copy-btn" onclick={copyWidget}>
+        {copied ? "Copied!" : "Copy"}
+      </button>
     </div>
 
-    <div class="divider"></div>
+    <p class="body-text">
+      {#if app.trunic}
+        <RuneText ipa="pleɪn lɪŋks ðæt hɪt ðə ɹɪŋ peɪst ɪt ɛniwɛɹ ɑn jɔɹ saɪt" />
+      {:else}
+        Plain links that hit the ring. Paste it anywhere on your site.
+      {/if}
+    </p>
 
-    <div class="col">
-      <div class="path-label">JSON API</div>
-      <p class="path-desc">
-        Fetch neighbor data client&#8209;side and build your own UI.
-        Requires JavaScript on the visitor's end.
-      </p>
-      <div class="endpoints">
-        <code>GET /next/json?from=url</code>
-        <code>GET /prev/json?from=url</code>
-        <code>GET /random/json</code>
-        <code>GET /first/json</code>
-        <code>GET /list</code>
-      </div>
-      <p class="path-desc response-hint">
-        Returns <code>{`{id, name, url, faviconName, status}`}</code>.
-        All endpoints serve CORS <code>*</code>.
-      </p>
+    <div class="links">
+      <a class="page-link" href="/widgets">
+        {#if app.trunic}<RuneText ipa="wɑnt fænsiɝ" />{:else}Want fancier?{/if}
+        <span class="dots"></span>
+        {#if app.trunic}<RuneText ipa="wɪdʒɪt ɡæləɹi" />{:else}Widget Gallery{/if}
+        &rarr;&nbsp;p.3
+      </a>
+      <a class="page-link" href="https://foxr.ing/docs">
+        {#if app.trunic}<RuneText ipa="fʊl eɪpiːaɪ" />{:else}Full API{/if}
+        <span class="dots"></span>
+        {#if app.trunic}<RuneText ipa="dɑks" />{:else}foxr.ing/docs{/if}
+      </a>
     </div>
+
   </div>
 
-  <div class="bottom-links">
-    <a class="page-link" href="/widgets">Widget gallery &rarr;&nbsp;p.3</a>
-    <a class="page-link" href="/my">Manage your sites &rarr;&nbsp;p.5</a>
-  </div>
 </div>
 
 <style>
@@ -86,93 +98,64 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     gap: 1rem;
   }
 
-  .checklist {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: var(--fs-xs);
-    color: var(--text-muted);
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .check-item {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-  .check {
-    width: 10px;
-    height: 10px;
-    border: 2px solid var(--border-box);
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-  .sep { color: var(--border-lore); }
-
-  .two-cols {
-    display: flex;
-    gap: 1.25rem;
+  .letter {
     width: 100%;
-    flex: 1;
-  }
-
-  .col {
-    flex: 1;
+    max-width: 60%;
+    font-style: normal;
+    text-align: left;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    margin: auto 0;
   }
 
-  .divider {
-    width: 2px;
-    background: var(--divider);
-    align-self: stretch;
-    flex-shrink: 0;
-  }
-
-  .path-label {
-    font-size: var(--fs-xs);
+  .greeting {
+    font-size: var(--fs-lg);
     font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent);
+    font-style: italic;
+    margin: 0;
   }
 
-  .path-desc {
-    font-size: var(--fs-xs);
-    line-height: 1.6;
+  .body-text {
+    font-size: var(--fs-sm);
+    line-height: 1.7;
     color: var(--text-muted);
     margin: 0;
   }
 
-  .endpoints {
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    font-size: var(--fs-xs);
-    color: var(--text-muted);
+    gap: 0.4rem;
+    font-size: var(--fs-sm);
   }
-  .endpoints code {
-    background: var(--code-bg);
-    color: var(--code-text);
-    padding: 0.2rem 0.5rem;
-    border-radius: 3px;
-    font-size: var(--fs-xs);
-    font-family: 'Courier Prime', monospace;
+  .checklist li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .check {
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--border-box);
+    border-radius: 2px;
+    flex-shrink: 0;
   }
 
-  .response-hint {
-    font-size: var(--fs-xs);
-    line-height: 1.6;
-  }
-  .response-hint code {
-    background: var(--bg-lore);
-    padding: 0.1rem 0.3rem;
-    border-radius: 3px;
-    font-size: var(--fs-xs);
+  .section-label {
+    font-size: var(--fs-sm);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin: 0.5rem 0 0;
   }
 
   .code-wrap {
@@ -209,10 +192,10 @@
   }
   .copy-btn:hover { background: var(--accent-dark); }
 
-  .bottom-links {
+  .links {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
+    flex-direction: column;
+    gap: 0.3rem;
   }
   .page-link {
     font-size: var(--fs-xs);
@@ -221,16 +204,24 @@
     text-transform: uppercase;
     color: var(--accent);
     text-decoration: none;
+    display: flex;
+    align-items: baseline;
   }
   .page-link:hover { text-decoration: underline; }
+  .dots {
+    flex: 1;
+    overflow: hidden;
+    margin: 0 0.3rem;
+    color: var(--accent);
+    height: 1em;
+    line-height: 1;
+  }
+  .dots::before {
+    content: '......................................................';
+    white-space: nowrap;
+  }
 
   @media (max-width: 865px) {
-    .two-cols {
-      flex-direction: column;
-    }
-    .divider {
-      width: 100%;
-      height: 2px;
-    }
+    .letter { max-width: 100%; }
   }
 </style>
