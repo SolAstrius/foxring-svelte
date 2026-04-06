@@ -34,30 +34,32 @@
   </div>
 
   <div class="light-side">
-    <div class="section">
-      <h3>
-        {#if app.trunic}<RuneText ipa="ðə ɹɪŋ ɹɪtɝnz" />{:else}The Ring Returns{/if}
-      </h3>
-      <p>
-        {#if app.trunic}
-          <RuneText ipa="fɑksɹɪŋ ɪz ə wɛbɹɪŋ ə kəlɛkʃən əv pɝsənəl wɛbsaɪts lɪŋkt ɪn ə luːp ɪts ðə oʊld weɪ əv faɪndɪŋ ɪntɹɛstɪŋ kɔɹnɝz əv ðə wɛb bɪlt baɪ ɹil pipəl" />
-        {:else}
-          Foxring is a <strong>webring</strong>&mdash;a collection of
-          personal websites linked in a loop. It's the old way of
-          finding interesting corners of the web, built by real people.
-        {/if}
-      </p>
-    </div>
+    <div class="light-content">
+      <div class="section">
+        <h3>
+          {#if app.trunic}<RuneText ipa="ðə ɹɪŋ ɹɪtɝnz" />{:else}The Ring Returns{/if}
+        </h3>
+        <p>
+          {#if app.trunic}
+            <RuneText ipa="fɑksɹɪŋ ɪz ə wɛbɹɪŋ ə kəlɛkʃən əv pɝsənəl wɛbsaɪts lɪŋkt ɪn ə luːp ɪts ðə oʊld weɪ əv faɪndɪŋ ɪntɹɛstɪŋ kɔɹnɝz əv ðə wɛb bɪlt baɪ ɹil pipəl" />
+          {:else}
+            Foxring is a <strong>webring</strong>&mdash;a collection of
+            personal websites linked in a loop. It's the old way of
+            finding interesting corners of the web, built by real people.
+          {/if}
+        </p>
+      </div>
 
-    <div class="section credits">
-      <p>
-        {#if app.trunic}
-          <RuneText ipa="dɪzaɪnd baɪ soʊl ɑstɹius fɔɪnɪks meɪnteɪnd baɪ vɑnutp" />
-        {:else}
-          Designed by <a href="https://solastrius.ink" class="credit-link">Sol Astrius Phoenix</a><br>
-          Maintained by <a href="https://vanutp.dev" class="credit-link">vanutp</a>
-        {/if}
-      </p>
+      <div class="section credits">
+        <p>
+          {#if app.trunic}
+            <RuneText ipa="dɪzaɪnd baɪ soʊl ɑstɹius fɔɪnɪks meɪnteɪnd baɪ vɑnutp" />
+          {:else}
+            Designed by <a href="https://solastrius.ink" class="credit-link">Sol Astrius Phoenix</a><br>
+            Maintained by <a href="https://vanutp.dev" class="credit-link">vanutp</a>
+          {/if}
+        </p>
+      </div>
     </div>
 
     <a class="back-link" href="/">
@@ -106,8 +108,12 @@
     padding: 2rem 2.5rem;
     display: flex;
     flex-direction: column;
+  }
+  .light-content {
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
     gap: 1.25rem;
-    justify-content: center;
   }
 
   .section h3 {
@@ -142,7 +148,6 @@
     text-transform: uppercase;
     color: var(--accent);
     text-decoration: none;
-    margin-top: auto;
   }
   .back-link:hover { text-decoration: underline; }
 
