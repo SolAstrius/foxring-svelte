@@ -59,6 +59,10 @@
         {/if}
       </p>
     </div>
+
+    <a class="back-link" href="/">
+      p.1&nbsp;&larr;&nbsp;{#if app.trunic}<RuneText ipa="bæk hoʊm" />{:else}Back Home{/if}
+    </a>
   </div>
 </div>
 
@@ -130,6 +134,17 @@
     text-decoration: none;
   }
   .credits :global(.credit-link:hover) { text-decoration: underline; }
+
+  .back-link {
+    font-size: var(--fs-xs);
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    margin-top: auto;
+  }
+  .back-link:hover { text-decoration: underline; }
 
   @media (max-width: 865px) {
     .spread {

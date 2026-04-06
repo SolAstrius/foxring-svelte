@@ -63,17 +63,17 @@
   </div>
 
   {#if loading}
-    <p class="muted">Loading...</p>
+    <p class="muted">{#if app.trunic}<RuneText ipa="loʊdɪŋ" />{:else}Loading...{/if}</p>
   {:else if !user}
     <div class="auth-box box">
-      <p class="muted">To get an account, <a href="https://t.me/vanutp">message vanutp</a>.</p>
-      <a class="btn" href={signInUrl()}>Sign in</a>
+      <p class="muted">{#if app.trunic}<RuneText ipa="tu ɡɛt ən əkaʊnt mɛsədʒ vɑnutp" />{:else}To get an account, <a href="https://t.me/vanutp">message vanutp</a>.{/if}</p>
+      <a class="btn" href={signInUrl()}>{#if app.trunic}<RuneText ipa="saɪn ɪn" />{:else}Sign in{/if}</a>
     </div>
   {:else}
-    <p class="muted">Signed in as <strong>{user.username}</strong></p>
+    <p class="muted">{#if app.trunic}<RuneText ipa="saɪnd ɪn æz" />{:else}Signed in as{/if} <strong>{user.username}</strong></p>
 
     <div class="box sites-box">
-      <h3>Your sites</h3>
+      <h3>{#if app.trunic}<RuneText ipa="jɔɹ saɪts" />{:else}Your sites{/if}</h3>
       {#if mySites.length > 0}
         <ul class="my-sites">
           {#each mySites as site}
@@ -81,7 +81,7 @@
               <span class="site-name">{site.name}</span>
               <span class="site-url">{site.url}</span>
               {#if confirmingId === site.id}
-                <button class="confirm-btn" onclick={() => requestDelete(site)}>sure?</button>
+                <button class="confirm-btn" onclick={() => requestDelete(site)}>{#if app.trunic}<RuneText ipa="ʃʊɹ" />{:else}sure?{/if}</button>
               {:else}
                 <button class="delete-btn" onclick={() => requestDelete(site)} aria-label="Delete {site.name}">
                   <Trash2 size={12} />
@@ -91,7 +91,7 @@
           {/each}
         </ul>
       {:else}
-        <p class="muted">No sites yet.</p>
+        <p class="muted">{#if app.trunic}<RuneText ipa="noʊ saɪts jɛt" />{:else}No sites yet.{/if}</p>
       {/if}
 
       <form class="add-form" onsubmit={(e) => { e.preventDefault(); handleAdd(); }}>
@@ -99,7 +99,11 @@
           <input class="field" type="url" placeholder="https://your.site" bind:value={newUrl} required />
           <input class="field" type="text" placeholder="Name (optional)" bind:value={newName} />
           <button class="btn" type="submit" disabled={submitting || !newUrl.trim()}>
-            {submitting ? "Adding..." : "Add site"}
+            {#if submitting}
+              {#if app.trunic}<RuneText ipa="ædɪŋ" />{:else}Adding...{/if}
+            {:else}
+              {#if app.trunic}<RuneText ipa="æd saɪt" />{:else}Add site{/if}
+            {/if}
           </button>
         </div>
       </form>
@@ -109,7 +113,7 @@
     </div>
   {/if}
 
-  <a class="back" href="/join">&larr; Back to Join</a>
+  <a class="back" href="/join">&larr; {#if app.trunic}<RuneText ipa="bæk tu dʒɔɪn" />{:else}Back to Join{/if}</a>
 </div>
 
 <style>

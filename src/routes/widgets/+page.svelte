@@ -133,8 +133,6 @@
     {/each}
   </div>
 
-  <p class="note">These are just starting points&mdash;you can design your own widget however you like, as long as it links to <a href={prev}>/prev</a>, <a href={next}>/next</a>, and <a href={hub}>the hub</a>.</p>
-
   <a class="back" href="/join">&larr; Back to Join</a>
 </div>
 
@@ -228,15 +226,6 @@
     cursor: pointer;
   }
   .copy-btn:hover { background: var(--accent-dark); }
-
-  .note {
-    font-size: var(--fs-xs);
-    color: var(--text-muted);
-    text-align: center;
-    font-style: italic;
-    margin: 0;
-    max-width: 360px;
-  }
 
   .back {
     font-size: var(--fs-xs);

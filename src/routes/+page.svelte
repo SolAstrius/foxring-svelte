@@ -63,7 +63,7 @@
 
     <div class="ring-status">
       <span class="status-indicator"></span>
-      {sites.filter(s => isOnline(s)).length}/{sites.length} online
+      {sites.filter(s => isOnline(s)).length}/{sites.length} {#if app.trunic}<RuneText ipa="ɑnlaɪn" />{:else}online{/if}
     </div>
 
     <div class="sidebar-links">
@@ -104,11 +104,16 @@
         {/each}
       </ul>
     {:else}
-      <p class="empty">Could not load ring members.</p>
+      <p class="empty">{#if app.trunic}<RuneText ipa="kʊd nɑt loʊd ɹɪŋ mɛmbɝz" />{:else}Could not load ring members.{/if}</p>
     {/if}
-    <a class="page-ref" href="/join">
-      {#if app.trunic}<RuneText ipa="dʒɔɪn ðə ɹɪŋ" />{:else}Join the Ring{/if}&nbsp;&rarr;&nbsp;p.2
-    </a>
+    <div class="page-refs">
+      <a class="page-ref" href="/join">
+        {#if app.trunic}<RuneText ipa="dʒɔɪn ðə ɹɪŋ" />{:else}Join the Ring{/if}&nbsp;&rarr;&nbsp;p.2
+      </a>
+      <a class="page-ref" href="/about">
+        {#if app.trunic}<RuneText ipa="əbaʊt" />{:else}About{/if}&nbsp;&rarr;&nbsp;p.4
+      </a>
+    </div>
   </div>
 </div>
 
@@ -183,9 +188,12 @@
 
   .empty { color: var(--text-muted); font-size: var(--fs-sm); font-style: italic; margin: 0.5rem 0; }
 
-  .page-ref {
-    display: block;
+  .page-refs {
+    display: flex;
+    justify-content: space-between;
     margin-top: 0.6rem;
+  }
+  .page-ref {
     font-size: var(--fs-xs);
     font-weight: bold;
     letter-spacing: 0.08em;
