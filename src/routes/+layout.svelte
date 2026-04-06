@@ -108,6 +108,20 @@
     </div>
 
     <div class="page-num">{pageNum}</div>
+
+    <nav class="mobile-nav">
+      {#if prevPage}
+        <a href={prevPage.path}>&larr;&nbsp;p.{prevPage.num}</a>
+      {:else}
+        <span></span>
+      {/if}
+      <span class="mobile-page">p.{pageNum}</span>
+      {#if nextPage}
+        <a href={nextPage.path}>p.{nextPage.num}&nbsp;&rarr;</a>
+      {:else}
+        <span></span>
+      {/if}
+    </nav>
   </div>
 
   <footer>
@@ -367,7 +381,27 @@
   }
   footer a { color: var(--footer-link); }
 
+  .mobile-nav {
+    display: none;
+  }
+
   @media (max-width: 865px) {
+    .mobile-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 1.5rem;
+      font-size: var(--fs-xs);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .mobile-nav a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .mobile-nav a:hover { text-decoration: underline; }
+    .mobile-page { color: var(--text-muted); }
     .desk { background: var(--bg-page); }
     .page { aspect-ratio: auto; border: none; box-shadow: none; }
     .page-inner { flex-direction: column; padding: 1.5rem; gap: 1.4rem; }
