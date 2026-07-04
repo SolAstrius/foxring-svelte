@@ -1,14 +1,14 @@
-FROM oven/bun:1 AS build
+FROM denoland/deno:2.8.2 AS build
 
 WORKDIR /app
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+COPY package.json deno.json deno.lock ./
+RUN deno task install
 
 COPY . .
 ENV NODE_ENV=production
-RUN bun run build
+RUN deno task build
 
-FROM oven/bun:1-slim
+FROM node:24-slim
 
 WORKDIR /app
 COPY --from=build /app/build ./build
@@ -20,5 +20,5 @@ ENV PROTOCOL_HEADER=x-forwarded-proto
 ENV HOST_HEADER=x-forwarded-host
 
 EXPOSE 3000
-USER bun
-CMD ["bun", "build/index.js"]
+USER node
+CMD ["node", "build/index.js"]

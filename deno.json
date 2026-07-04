@@ -1,0 +1,11 @@
+{
+	"nodeModulesDir": "auto",
+	"tasks": {
+		"install": "deno install --allow-scripts",
+		"dev": "sh -c 'if [ \"$1\" = \"--\" ]; then shift; fi; exec vite dev \"$@\"' sh",
+		"build": "vite build",
+		"preview": "sh -c 'if [ \"$1\" = \"--\" ]; then shift; fi; exec vite preview \"$@\"' sh",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"start": "node build/index.js"
+	}
+}
